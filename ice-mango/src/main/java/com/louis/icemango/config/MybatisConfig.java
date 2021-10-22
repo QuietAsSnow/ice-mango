@@ -10,6 +10,9 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
+/**
+ * mybatis配置
+ */
 @Configuration
 @MapperScan("com.louis.icemango.**.dao")  //扫描DAO
 public class MybatisConfig {
