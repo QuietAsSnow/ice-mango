@@ -17,7 +17,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 /**
- * druid配置
+ *  druid配置
  */
 @Configuration
 @EnableConfigurationProperties({DruidDataSourceProperties.class})

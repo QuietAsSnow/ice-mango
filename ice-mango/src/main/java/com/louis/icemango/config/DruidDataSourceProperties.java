@@ -2,6 +2,9 @@ package com.louis.icemango.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+/**
+ *  druid配置
+ */
 @ConfigurationProperties(prefix = "spring.datasource.druid")
 public class DruidDataSourceProperties {
 
