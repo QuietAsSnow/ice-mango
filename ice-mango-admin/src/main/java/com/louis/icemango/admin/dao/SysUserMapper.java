@@ -2,6 +2,8 @@ package com.louis.icemango.admin.dao;
 
 import com.louis.icemango.admin.model.SysUser;
 
+import java.util.List;
+
 public interface SysUserMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +16,6 @@ public interface SysUserMapper {
     int updateByPrimaryKeySelective(SysUser record);
 
     int updateByPrimaryKey(SysUser record);
+
+    List<SysUser> selectAll();
 }
