@@ -47,6 +47,12 @@
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
+
+        <!--关闭注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
         <!-- 必须要有的，使用这个配置链接数据库
             @TODO:是否可以扩展
          -->

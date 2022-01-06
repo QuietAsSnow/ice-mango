@@ -23,7 +23,7 @@ spring:
       max-wait: 60000
       # 最小连接数
       min-idle: 1
-      # 时隔多久检查一次是否有空前连接，检测需要关闭的空闲连接，单位毫秒
+      # 时隔多久检查一次是否有空连接，检测需要关闭的空闲连接，单位毫秒
       time-between-eviction-runs-millis: 60000
       # 一个连接在池中最小生存的时间，单位毫秒
       min-evictable-idle-time-millis: 300000
