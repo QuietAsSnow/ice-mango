@@ -1,6 +1,7 @@
 package com.louis.icemango.admin.dao;
 
 import com.louis.icemango.admin.model.SysUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,12 @@ public interface SysUserMapper {
     int updateByPrimaryKey(SysUser record);
 
     List<SysUser> selectAll();
+
+    List<SysUser> findPage();
+
+    SysUser findByName(@Param(value="name") String name);
+
+    List<SysUser> findPageByName(@Param(value="name") String name);
+
+    List<SysUser> findPageByNameAndEmail(@Param(value="name") String name, @Param(value="email") String email);
 }

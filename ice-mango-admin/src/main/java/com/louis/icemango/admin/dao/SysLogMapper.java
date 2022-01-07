@@ -1,6 +1,9 @@
 package com.louis.icemango.admin.dao;
 
 import com.louis.icemango.admin.model.SysLog;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysLogMapper {
     int deleteByPrimaryKey(Long id);
@@ -14,4 +17,8 @@ public interface SysLogMapper {
     int updateByPrimaryKeySelective(SysLog record);
 
     int updateByPrimaryKey(SysLog record);
+
+    List<SysLog> findPage();
+
+    List<SysLog> findPageByUserName(@Param(value="userName") String userName);
 }

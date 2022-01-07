@@ -18,6 +18,7 @@ public class ReflectionUtils {
      */
     public static Object invoke(Object object, String method, Object... args){
         Object result = null;
+        //? extends Object 上界通配符，是Object类以及它所有的派生类
         Class<? extends Object> clazz = object.getClass();
         Method queryMethod = getMethod(clazz, method, args);
         if(queryMethod != null){
@@ -54,13 +55,16 @@ public class ReflectionUtils {
             if(method.getName().equals(name)){
                 //获取每个方法的参数对象
                 Class<?>[] parameterTypes = method.getParameterTypes();
+                //对比入参数量，区分重构方法
                 if(parameterTypes.length == args.length){
                     boolean isSameMethod = true;
+                    //轮询每个参数
                     for(int i=0; i<parameterTypes.length;i++){
                         Object arg = args[i];
                         if(arg == null){
                             arg = "";
                         }
+                        //对比参数类型，类型不同，不为需要调用方法
                         if(!parameterTypes[i].equals(args[i].getClass())){
                             isSameMethod = false;
                         }

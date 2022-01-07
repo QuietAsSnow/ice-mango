@@ -47,6 +47,10 @@ public class PageRequest {
         this.params = params;
     }
 
+    public Object getParam(String key) {
+        return getParams().get(key);
+    }
+
     @Override
     public String toString() {
         return "PageRequest{" +
