@@ -7,6 +7,7 @@ import com.louis.icemango.core.page.PageResult;
 import com.louis.icemango.core.service.CurdService;
 
 import java.util.List;
+import java.util.Set;
 
 public interface SysUserService extends CurdService<SysUser>{
 
@@ -30,5 +31,12 @@ public interface SysUserService extends CurdService<SysUser>{
      * @return
      */
     List<SysUserRole> findUserRoles(Long userId);
+
+    /**
+     * 查找用户的菜单权限标识集合
+     * @param userName
+     * @return
+     */
+    Set<String> findPermissions(String userName);
 
 }

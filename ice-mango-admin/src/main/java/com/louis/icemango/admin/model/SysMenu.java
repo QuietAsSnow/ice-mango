@@ -1,6 +1,7 @@
 package com.louis.icemango.admin.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysMenu {
     private Long id;
@@ -28,6 +29,12 @@ public class SysMenu {
     private Date lastUpdateTime;
 
     private Byte delFlag;
+    // 非数据库字段
+    private String parentName;
+    // 非数据库字段
+    private Integer level;
+    // 非数据库字段
+    private List<SysMenu> children;
 
     public Long getId() {
         return id;
@@ -131,5 +138,29 @@ public class SysMenu {
 
     public void setDelFlag(Byte delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public List<SysMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysMenu> children) {
+        this.children = children;
     }
 }

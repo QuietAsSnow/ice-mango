@@ -3,8 +3,10 @@ package com.louis.icemango.admin.service.impl;
 import com.louis.icemango.admin.dao.SysRoleMapper;
 import com.louis.icemango.admin.dao.SysUserMapper;
 import com.louis.icemango.admin.dao.SysUserRoleMapper;
+import com.louis.icemango.admin.model.SysMenu;
 import com.louis.icemango.admin.model.SysRole;
 import com.louis.icemango.admin.model.SysUserRole;
+import com.louis.icemango.admin.service.SysMenuService;
 import com.louis.icemango.admin.service.SysUserService;
 import com.louis.icemango.admin.model.SysUser;
 import com.louis.icemango.core.page.MybatisPageHelper;
@@ -14,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SysUserServiceImpl implements SysUserService {
@@ -29,6 +33,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysRoleMapper sysRoleMapper;
 
+    @Autowired
+    private SysMenuService sysMenuService;
+
     @Override
     public List<SysUser> selectAll() {
         return sysUserMapper.selectAll();
@@ -38,7 +45,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public int save(SysUser record) {
         Long id = null;
-        if(record.getId() == null || record.getId() == 0) {
+        if (record.getId() == null || record.getId() == 0) {
             // 新增用户
             sysUserMapper.insertSelective(record);
             id = record.getId();
@@ -47,17 +54,17 @@ public class SysUserServiceImpl implements SysUserService {
             sysUserMapper.updateByPrimaryKeySelective(record);
         }
         // 更新用户角色
-        if(id != null && id == 0) {
+        if (id != null && id == 0) {
             return 1;
         }
-        if(id != null) {
-            for(SysUserRole sysUserRole:record.getUserRoles()) {
+        if (id != null) {
+            for (SysUserRole sysUserRole : record.getUserRoles()) {
                 sysUserRole.setUserId(id);
             }
         } else {
             sysUserRoleMapper.deleteByUserId(record.getId());
         }
-        for(SysUserRole sysUserRole:record.getUserRoles()) {
+        for (SysUserRole sysUserRole : record.getUserRoles()) {
             sysUserRoleMapper.insertSelective(sysUserRole);
         }
         return 1;
@@ -70,7 +77,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public int delete(List<SysUser> records) {
-        for(SysUser record:records) {
+        for (SysUser record : records) {
             delete(record);
         }
         return 1;
@@ -92,12 +99,25 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    public Set<String> findPermissions(String userName) {
+        Set<String> perms = new HashSet<>();
+        List<SysMenu> sysMenus = sysMenuService.findByUser(userName);
+        for (SysMenu sysMenu : sysMenus) {
+            if (sysMenu.getPerms() != null && !"".equals(sysMenu.getPerms())) {
+                perms.add(sysMenu.getPerms());
+            }
+        }
+        return perms;
+
+    }
+
+    @Override
     public PageResult findPage(PageRequest pageRequest) {
         PageResult pageResult = null;
         Object name = pageRequest.getParam("name");
         Object email = pageRequest.getParam("email");
-        if(name != null) {
-            if(email != null) {
+        if (name != null) {
+            if (email != null) {
                 pageResult = MybatisPageHelper.findPage(pageRequest, sysUserMapper, "findPageByNameAndEmail", name, email);
             } else {
                 pageResult = MybatisPageHelper.findPage(pageRequest, sysUserMapper, "findPageByName", name);
@@ -112,11 +132,12 @@ public class SysUserServiceImpl implements SysUserService {
 
     /**
      * 加载用户角色
+     *
      * @param pageResult
      */
     private void findUserRoles(PageResult pageResult) {
         List<?> content = pageResult.getContent();
-        for(Object object:content) {
+        for (Object object : content) {
             SysUser sysUser = (SysUser) object;
             List<SysUserRole> userRoles = findUserRoles(sysUser.getId());
             sysUser.setUserRoles(userRoles);
@@ -126,14 +147,14 @@ public class SysUserServiceImpl implements SysUserService {
 
     private String getRoleNames(List<SysUserRole> userRoles) {
         StringBuilder sb = new StringBuilder();
-        for(Iterator<SysUserRole> iter = userRoles.iterator(); iter.hasNext();) {
+        for (Iterator<SysUserRole> iter = userRoles.iterator(); iter.hasNext(); ) {
             SysUserRole userRole = iter.next();
             SysRole sysRole = sysRoleMapper.selectByPrimaryKey(userRole.getRoleId());
-            if(sysRole == null) {
-                continue ;
+            if (sysRole == null) {
+                continue;
             }
             sb.append(sysRole.getRemark());
-            if(iter.hasNext()) {
+            if (iter.hasNext()) {
                 sb.append(", ");
             }
         }
