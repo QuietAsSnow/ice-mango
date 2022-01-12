@@ -4,12 +4,15 @@ import com.louis.icemango.admin.constant.SysConstants;
 import com.louis.icemango.admin.model.SysUser;
 import com.louis.icemango.admin.service.SysUserService;
 import com.louis.icemango.admin.util.PasswordUtils;
+import com.louis.icemango.common.utils.FileUtils;
 import com.louis.icemango.core.http.HttpResult;
 import com.louis.icemango.core.page.PageRequest;
 import com.louis.icemango.core.page.PageResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 
 @RestController
@@ -83,6 +86,12 @@ public class SysUserController {
     @GetMapping(value="/findUserRoles")
     public HttpResult findUserRoles(@RequestParam Long userId) {
         return HttpResult.ok(sysUserService.findUserRoles(userId));
+    }
+
+    @PostMapping(value="/exportExcelUser")
+    public void exportExcelUser(@RequestBody PageRequest pageRequest, HttpServletResponse res) {
+        File file = sysUserService.createUserExcelFile(pageRequest);
+        FileUtils.downloadFile(res, file, file.getName());
     }
 
 }

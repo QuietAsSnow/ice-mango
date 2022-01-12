@@ -27,12 +27,14 @@ public class ReflectionUtils {
                 result = queryMethod.invoke(object, args);
             }catch (IllegalAccessException e){
                 e.printStackTrace();
+            }catch (IllegalArgumentException e) {
+                e.printStackTrace();
             }catch (InvocationTargetException e){
                 e.printStackTrace();
             }
         }else{
             try {
-                throw new NoSuchMethodException(clazz.getClass()+" 类中没有找到 "+ method+" 方法。");
+                throw new NoSuchMethodException(clazz.getName()+" 类中没有找到 "+ method+" 方法。");
             } catch (NoSuchMethodException e) {
                 e.printStackTrace();
             }

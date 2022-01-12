@@ -60,11 +60,12 @@ public class MybatisPageHelper {
      * @param pageInfo
      * @return
      */
-    private static PageResult getPageResult(PageRequest pageRequest, PageInfo pageInfo) {
+    private static PageResult getPageResult(PageRequest pageRequest, PageInfo<?> pageInfo) {
         PageResult pageResult = new PageResult();
         pageResult.setPageNum(pageInfo.getPageNum());
         pageResult.setPageSize(pageInfo.getPageSize());
         pageResult.setTotalSize(pageInfo.getTotal());
+        pageResult.setTotalPage(pageInfo.getPages());
         pageResult.setContent(pageInfo.getList());
         return pageResult;
     }
